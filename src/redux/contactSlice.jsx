@@ -1,16 +1,34 @@
-import { addContact, deleteContact, fetchContacts } from './operations';
-const { createSlice } = require('@reduxjs/toolkit');
+import { createSlice } from '@reduxjs/toolkit';
+import { fetchContacts, addContact, deleteContact } from './operations';
+
+const initialState = {
+  items: [],
+  isLoading: false,
+  error: null,
+};
 
 const handlePending = state => {
-  return { ...state, isLoading: true };
+  return {
+    ...state,
+    isLoading: true,
+  };
 };
 
 const handleRejected = (state, action) => {
-  return { ...state, isLoading: false, error: action.payload };
+  return {
+    ...state,
+    isLoading: true,
+    error: action.payload,
+  };
 };
 
 const handleFetchContactsSuccess = (state, action) => {
-  return { ...state, isLoading: false, error: null, items: action.payload };
+  return {
+    ...state,
+    isLoading: false,
+    error: null,
+    items: action.payload,
+  };
 };
 
 const handleAddContactSuccess = (state, action) => {
@@ -33,11 +51,7 @@ const handleDeleteContactSuccess = (state, action) => {
 
 const contactsSlice = createSlice({
   name: 'contacts',
-  initialState: {
-    items: [],
-    isLoading: false,
-    error: null,
-  },
+  initialState,
   extraReducers: {
     [fetchContacts.pending]: handlePending,
     [addContact.pending]: handlePending,
